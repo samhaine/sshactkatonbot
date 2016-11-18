@@ -1,18 +1,21 @@
 import requests
+import datetime
+from sshackaton import settings
 
 def getJWTtoken():
-    AUTH_URL = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
-    client_id = '73d727a4-6c40-4a72-a1a8-290f95ab7c64'
-    client_secret = 'UQLaifGUroQnnnf1fO0hrct'
+    """ Generates aut JWT token and returns, returns tuple (token, timestaamp) """
+    url = settings.AUTH_URL
+    id = settings.BOT_ID
+    passwd = settings.BOT_PASSWD
     payload = {
         'grant_type': "client_credentials",
-        'client_id': client_id,
-        'client_secret': client_secret,
+        'client_id': id,
+        'client_secret': passwd,
         'scope': "https://graph.microsoft.com/.default",
     }
-    response = requests.post(AUTH_URL, data=payload)
+    response = requests.post(url, data=payload)
     response.raise_for_status()
     token = response.json()['access_token']
-    return token
+    return (token, datetime.datetime.now())
 
 
