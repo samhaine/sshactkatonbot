@@ -17,5 +17,6 @@ def getJWTtoken():
     response = requests.post(AUTH_URL, data=payload)
     response.raise_for_status()
     token = response.json()['access_token']
-    #return token
-    return StreamingHttpResponse(token)
+    return token
+
+
