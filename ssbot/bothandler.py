@@ -39,5 +39,21 @@ def is_token_valid():
     else:
         return True
 
+def sent_skype_msg(message, conversation_id, recipient_name):
+    data = {}
+    data['type'] = 'message'
+    data['timestamp'] = timezone.now()
+    data['from'] = {}
+    data['from']['id'] = settings.BOT_RECIPIENT
+    data['from']['name'] = settings.BOT_NAME
+    data['conversation'] = {}
+    data['conversation']['id'] = conversation_id
+    data['recipient'] = {}
+    data['recipient']['id'] = conversation_id
+    data['recipient']['name'] = recipient_name
+    data['text'] = message
+    data['replyToId'] = ''
+
+
 
 

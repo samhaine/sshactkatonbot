@@ -16,6 +16,8 @@ import os
 AUTH_URL = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
 BOT_ID = '73d727a4-6c40-4a72-a1a8-290f95ab7c64'
 BOT_PASSWD = 'UQLaifGUroQnnnf1fO0hrct'
+BOT_RECIPIENT = '28:73d727a4-6c40-4a72-a1a8-290f95ab7c64'
+BOT_NAME = 'SSHACKATONBOT'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
