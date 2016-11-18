@@ -39,7 +39,7 @@ def is_token_valid():
     else:
         return True
 
-def sent_skype_msg(message, conversation_id, recipient_name):
+def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     data = {}
     data['type'] = 'message'
     data['timestamp'] = timezone.now()
@@ -52,8 +52,9 @@ def sent_skype_msg(message, conversation_id, recipient_name):
     data['recipient']['id'] = conversation_id
     data['recipient']['name'] = recipient_name
     data['text'] = message
-    data['replyToId'] = ''
+    data['replyToId'] = replyToId
+    json_data = json.dump(data)
 
-#
+
 
 
