@@ -33,4 +33,7 @@ def botendpoint(request):
         http_log_item.save()
         return HttpResponse(str(request.META))
 
-
+def refresh_token(request):
+    bothandler.getJWTtoken()
+    return HttpResponse(str('done'))
+    #bothandler.is_token_valid()

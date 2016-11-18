@@ -1,6 +1,14 @@
-import requests
 import datetime
 from sshackaton import settings
+from ssbot.models import *
+from django.utils import timezone
+from datetime import *
+from django.utils import timezone
+import json
+from ssbot.models import *
+import os
+import requests
+
 
 def getJWTtoken():
     """ Generates aut JWT token and returns, returns tuple (token, timestamp) """
@@ -15,7 +23,17 @@ def getJWTtoken():
     }
     response = requests.post(url, data=payload)
     response.raise_for_status()
-    token = response.json()['access_token']
+    token = JWTRToken.objects.all()[:1].get().date
+    token = JWTRToken(JWTtoken=response.json()['access_token'], date=timezone.now())
+    token.save()
     return (token, datetime.datetime.now())
 
+
+def is_token_valid():
+    token_date = JWTRToken.objects.all()[:1].get().date
+    timediff = timezone.now() - token_date
+    if timediff > timedelta(minutes>59):
+        return False
+    else:
+        return True
 
