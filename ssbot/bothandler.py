@@ -3,7 +3,7 @@ import datetime
 from sshackaton import settings
 
 def getJWTtoken():
-    """ Generates aut JWT token and returns, returns tuple (token, timestaamp) """
+    """ Generates aut JWT token and returns, returns tuple (token, time stamp) """
     url = settings.AUTH_URL
     id = settings.BOT_ID
     passwd = settings.BOT_PASSWD
