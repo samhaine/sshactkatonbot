@@ -23,11 +23,12 @@ def index(request):
 @csrf_exempt
 def botendpoint(request):
     if request.method=='POST':
-            received_json_data=json.loads(request.body)
-            #received_json_data=json.loads(request.body)##
-            http_log_item = HTTPLoger(date=timezone.now(), httpStuff=str(request.META) + " \n JSON POST DATA: " +  str(received_json_data))
-            http_log_item.save()
-            return StreamingHttpResponse('POST received: ' + str(received_json_data))
+        received_json_data=json.loads(request.body)
+        #received_json_data=json.loads(request.body)##
+        http_log_item = HTTPLoger(date=timezone.now(), httpStuff=str(request.META) + " \n JSON POST DATA: " +  str(received_json_data))
+        http_log_item.save()
+        #return StreamingHttpResponse('POST received: ' + str(received_json_data))
+        return HttpResponse("asdfgfdsa")
     else:
         http_log_item = HTTPLoger(date=timezone.now(), httpStuff=str(request.META))
         http_log_item.save()
