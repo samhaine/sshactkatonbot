@@ -23,7 +23,7 @@ def index(request):
 def botendpoint(request):
     if request.method=='POST':
             received_json_data=json.loads(request.body)
-            #received_json_data=json.loads(request.body)
+            #received_json_data=json.loads(request.body)#
             http_log_item = HTTPLoger(date=timezone.now(), httpStuff=str(request.META))
             http_log_item.save()
             return StreamingHttpResponse('POST received: ' + str(received_json_data))
