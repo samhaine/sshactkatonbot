@@ -1,7 +1,3 @@
-from django.http import HttpResponse, StreamingHttpResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
-import os
 import requests
 
 def getJWTtoken():
