@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ssbot.apps.SsbotConfig',
+    'plugin_base',
     'foosball_plugin',
 ]
 
