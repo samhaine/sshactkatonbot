@@ -1,0 +1,13 @@
+{% if top_10_http_requests %}
+    <ul>
+    {% for http_request in top_10_http_requests %}
+        <hr>
+        <li>http_request.date:  <br></li>
+        <li>{{ http_request.httpStuff }}</li>
+        <hr>
+        <br>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>no stuff there yet...</p>
+{% endif %}
