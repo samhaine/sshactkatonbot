@@ -16,8 +16,11 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from foosball_plugin.views import handle_message
+
 urlpatterns = [
     url(r'^ssbot/', include('ssbot.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^foosball/handleMessage/$', handle_message),
 ]
 

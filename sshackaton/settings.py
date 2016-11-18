@@ -44,9 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ssbot.apps.SsbotConfig'
-    #'ssbot'
-
+    'ssbot.apps.SsbotConfig',
+    'foosball_plugin',
 ]
 
 MIDDLEWARE = [
