@@ -12,7 +12,7 @@ import requests
 
 
 def getJWTtoken():
-    """ Generates aut JWT token and returns, returns tuple (token, timestamp) """
+    """ Generates  aut JWT token and returns, returns tuple (token, timestamp) """
     url = settings.AUTH_URL
     id = settings.BOT_ID
     passwd = settings.BOT_PASSWD
