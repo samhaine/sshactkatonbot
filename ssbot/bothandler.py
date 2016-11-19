@@ -5,6 +5,7 @@ from ssbot.models import *
 from django.utils import timezone
 from datetime import *
 from django.utils import timezone
+from django.core.serializers.json import DjangoJSONEncoder
 import json
 from ssbot.models import *
 import os
@@ -34,7 +35,7 @@ def getJWTtoken():
 def is_token_valid():
     token_date = JWTRToken.objects.first()
     timediff = timezone.now() - token_date.date
-    #TODO:  Check  refresh time of token (at some blog it is stated liveTime is 30 mins and in other it is 60
+    #TODO:Check refresh time of token (at  some blog it is stated liveTime is 30 mins and in other it is 60
     if timediff > timedelta(minutes=60):
         return False
     else:
@@ -43,10 +44,10 @@ def is_token_valid():
 
 def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     if is_token_valid():
-        #j ust fuck it and try to refresh!
-        getJWTtoken()
         token = JWTRToken.objects.first()
+        print "Token is Valid no need to update"
     else:
+        print "Need to refresh token "
         getJWTtoken()
         token = JWTRToken.objects.first()
 
@@ -56,7 +57,7 @@ def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     }
     data = {}
     data['type'] = 'message'
-    data['timestamp'] = timezone.now()
+    data['timestamp'] = timezone.now().isoformat()
     data['from'] = {}
     data['from']['id'] = settings.BOT_RECIPIENT
     data['from']['name'] = settings.BOT_NAME
@@ -67,11 +68,38 @@ def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     data['recipient']['name'] = recipient_name
     data['text'] = message
     data['replyToId'] = replyToId
-    json_data = json.dump(data)
+    json_data = json.dumps(data, cls=DjangoJSONEncoder)
     url = 'https://skype.botframework.com/v3/conversations/' + conversation_id + '/activities/' +replyToId
     r = requests.post(url, json_data, headers=headers)
-    http_log_item = HTTPLoger(date=timezone.now(), httpStuff="POST response: " + str(r))
+    http_log_item = HTTPLoger(date=timezone.now(), httpStuff='POST status code: ' + str(r.status_code) + 'Req text: ' + str(r.text) + 'Content: ' + str(r.content))
     http_log_item.save()
+
+
+def talkToALICE(input_msg):
+    try:
+        print input_msg
+        if input_msg == 'joke':
+            gross_joke = str(get_gross_joke().replace('<p>', '').replace('\n', '')).replace('<BLOCKQUOTE>', '').replace('</BLOCKQ', '')
+            print gross_joke
+            return gross_joke
+        url = 'http://sheepridge.pandorabots.com/pandora/talk?botid=b69b8d517e345aba&skin=custom_input'
+        data = {
+            'botcust2': 'bdfc33b5de1b1c31',
+            'input': input_msg
+        }
+        output_msg = requests.post(url, data=data).content
+        return output_msg[output_msg.rfind("ALICE:")+7:]
+    except:
+        import traceback, sys
+        traceback.print_exc(file=sys.stdout)
+
+
+    return 'Sorry I am not myself today [internal server error or whateva... But I have joke for you ' + get_gross_joke().replace('<p>', '').replace('\n','')
+
+def get_gross_joke():
+    page = str(requests.post('http://www.randomjoke.com/topic/gross.php').text)
+    joke = page[page.find('topic list"></P>\n<P>\n')+21:page.find('<CENTER>')-7]
+    return str(joke.replace('<p>', ''))
 
 
 
