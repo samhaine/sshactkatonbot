@@ -1,6 +1,7 @@
 import json
 
 import apiai
+import requests
 from django.http import JsonResponse
 
 
@@ -15,6 +16,8 @@ class IncapableError(Exception):
 
 
 class ApiAiBase(object):
+    BOT_URL = 'http://example.org'  # FIXME obviusly wrong address
+
     def __init__(self, user, ctx):
         self.user = user
         self._ctx = ctx
@@ -40,7 +43,11 @@ class ApiAiBase(object):
             raise IncapableError
 
     def message_user(self, users, message):
-        return NotImplemented
+        data = {
+            'users': users,
+            'message': message,
+        }
+        requests.get(self.BOT_URL, data)
 
     def unknown_action(self):
         return '', S_INC
