@@ -24,7 +24,7 @@ def index(request):
 def botendpoint(request):
     if request.method=='POST':
         received_json_data=json.loads(request.body)
-        http_log_item = HTTPLoger(date=timezone.now(), httpStuff=str(request.META) + " \n JSON POST DATA: " +  str(received_json_data))
+        http_log_item = HTTPLoger(date=timezone.now(), httpStuff=str(request.META) + " \n JSON POST  DATA: " +  str(received_json_data))
         http_log_item.save()
         if received_json_data['type'] == 'message':
             bothandler.reply_skype_msg(
