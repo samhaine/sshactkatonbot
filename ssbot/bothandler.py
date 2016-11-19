@@ -103,6 +103,10 @@ def get_gross_joke():
 
 
 def send_skype_msg(message, recipient_id, recipient_name):
+    if recipient_id is None:
+        print recipient_name.encode('UTF-8')
+        recipient_id = UserIDs.objects.get(username__icontains = recipient_name.encode('UTF-8')).skypeid
+
     if is_token_valid():
         token = JWTRToken.objects.first()
         print "Token is Valid no need to update"
@@ -132,4 +136,7 @@ def send_skype_msg(message, recipient_id, recipient_name):
     r = requests.post(url, json_data, headers=headers)
     #http_log_item = HTTPLoger(date=timezone.now(), httpStuff='POST status code: ' + str(r.status_code) + 'Req text: ' + str(r.text) + 'Content: ' + str(r.content))
     #http_log_item.save()
+
+def add_user_data(id, user_name):
+    user, created = UserIDs.objects.get_or_create(skypeid=id, username = user_name)
 
