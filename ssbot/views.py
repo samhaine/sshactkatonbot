@@ -7,9 +7,26 @@ from django.utils import timezone
 import json
 from ssbot.models import *
 from ssbot import bothandler
+from plugin_base.plugin import IncapableError, S_FAIL, S_OK
+from autofeed_plugin.plugin import *
+from  compintel_plugin.plugin import *
+from foosball_plugin.plugin import *
+
 import os
 import requests
 
+def autodiscovery(username, message):
+    username =  username.encode('utf-8')
+    for p in [CompintelPlugin(username, {}), FoosballPlugin(username, {}), AutofeedPlugin(username, {})]:
+        try:
+
+            p.recognize(message)
+            return p.action()
+        except IncapableError:
+            pass
+        # except Exception as e:
+        #     print e
+    return message, S_FAIL
 
 
 def index(request):
@@ -28,14 +45,27 @@ def botendpoint(request):
         http_log_item = HTTPLoger(date=timezone.now(), httpStuff=str(request.META) + " \n JSON POST  DATA: " +  str(received_json_data))
         http_log_item.save()
         if received_json_data['type'] == 'message':
-            get_AI_reply_from_ALICE_bot = bothandler.talkToALICE(received_json_data['text'])
-            bothandler.reply_skype_msg(
-                get_AI_reply_from_ALICE_bot,
-                received_json_data['conversation']['id'],
-                received_json_data['from']['name'],
-                received_json_data['id']
-            )
-            return StreamingHttpResponse('POST sednd')
+            msg, status = autodiscovery(received_json_data['from']['name'], received_json_data['text'])
+            if msg  :
+                bothandler.reply_skype_msg(
+                    msg,
+                    received_json_data['conversation']['id'],
+                    received_json_data['from']['name'],
+                    received_json_data['id']
+                )
+                return StreamingHttpResponse('POST apiai')
+            else:
+                get_AI_reply_from_ALICE_bot = bothandler.talkToALICE(received_json_data['text'])
+                bothandler.reply_skype_msg(
+                    get_AI_reply_from_ALICE_bot,
+                    received_json_data['conversation']['id'],
+                    received_json_data['from']['name'],
+                    received_json_data['id']
+                )
+                return StreamingHttpResponse('POST chatbot')
+        elif received_json_data['type'] == 'add' or received_json_data['type']=='contactRelationUpdate':
+            bothandler.add_user_data(received_json_data['from']['id'], received_json_data['from']['name'])
+            return StreamingHttpResponse('Contact exchanged')
         else:
             return StreamingHttpResponse('POST received: ' + str(received_json_data))
 
@@ -50,6 +80,13 @@ def refresh_token(request):
     return HttpResponse(str('done'))
     ## bothandler.is_token_valid()
 
+@csrf_exempt
+def voice_chanel(request):
+    http_log_item = HTTPLoger(date=timezone.now(), httpStuff=str(request.META))
+    http_log_item.save()
+    msg = request.META['HTTP_MESSAGEFROMDIMA']
+    get_AI_reply_from_ALICE_bot = bothandler.talkToALICE(msg)
+    return HttpResponse(get_AI_reply_from_ALICE_bot)
 
 
 

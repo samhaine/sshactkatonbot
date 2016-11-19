@@ -3,7 +3,7 @@ import json
 import apiai
 import requests
 from django.http import JsonResponse
-
+from ssbot import bothandler
 
 S_FAIL = 'fail'
 S_OK = 'ok'
@@ -42,16 +42,10 @@ class ApiAiBase(object):
         except KeyError:
             raise IncapableError
 
-    def message_user(self, users, message):
-        data = {
-            'users': users,
-            'message': message,
-        }
-        resp = requests.get(self.BOT_URL, data)
-        status = S_FAIL
-        if resp.status_code == 200:
-            status = S_OK
-        return status
+    def message_users(self, users, message):
+        for u in users:
+            bothandler.send_skype_msg(message, None, u)
+        return S_OK
 
     def unknown_action(self):
         return '', S_INC

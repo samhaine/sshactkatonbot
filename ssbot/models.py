@@ -12,3 +12,8 @@ class HTTPLoger(models.Model):
 class JWTRToken(models.Model):
     date = models.DateTimeField('date')
     JWTtoken = models.TextField(blank=True, null=True)
+
+
+class UserIDs(models.Model):
+    skypeid = models.CharField(max_length=100, unique=True)
+    username = models.TextField()
