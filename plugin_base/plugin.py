@@ -6,6 +6,7 @@ from django.http import JsonResponse
 
 S_FAIL = 'fail'
 S_OK = 'ok'
+S_NOT_DONE = 'not-done'
 S_INC = 'incapable'
 
 
@@ -37,6 +38,9 @@ class ApiAiBase(object):
             self._ctx['speech'] = data['result']['fulfillment']['speech']
         except KeyError:
             raise IncapableError
+
+    def message_user(self, users, message):
+        return NotImplemented
 
     def unknown_action(self):
         return '', S_INC
