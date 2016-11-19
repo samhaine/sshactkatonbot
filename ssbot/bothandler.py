@@ -35,10 +35,11 @@ def is_token_valid():
     token_date = JWTRToken.objects.first()
     timediff = timezone.now() - token_date.date
     #TODO:  Check  refresh time of token (at some blog it is stated liveTime is 30 mins and in other it is 60
-    if timediff > timedelta(minutes>60):
+    if timediff > timedelta(minutes=60):
         return False
     else:
         return True
+
 
 def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     if is_token_valid():
