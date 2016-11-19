@@ -42,7 +42,7 @@ def is_token_valid():
 
 def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     if is_token_valid():
-        #just fuck it and try to refresh!
+        #j ust fuck it and try to refresh!
         getJWTtoken()
         token = JWTRToken.objects.first()
     else:
