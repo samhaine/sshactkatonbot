@@ -33,16 +33,17 @@ def getJWTtoken():
 
 def is_token_valid():
     token_date = JWTRToken.objects.first()
-    timediff = timezone.now() - token_date
-    #TODO: Check refresh time of token (at some blog it is stated liveTime is 30 mins and in other it is 60
-    if timediff > timedelta(minutes>60):
+    timediff = timezone.now() - token_date.date
+    #TODO:  Check  refresh time of token (at some blog it is stated liveTime is 30 mins and in other it is 60
+    if timediff > timedelta(minutes=60):
         return False
     else:
         return True
 
+
 def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     if is_token_valid():
-        #just fuck it and try to refresh!
+        #j ust fuck it and try to refresh!
         getJWTtoken()
         token = JWTRToken.objects.first()
     else:
@@ -69,8 +70,8 @@ def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     json_data = json.dump(data)
     url = 'https://skype.botframework.com/v3/conversations/' + conversation_id + '/activities/' +replyToId
     r = requests.post(url, json_data, headers=headers)
-
-
+    http_log_item = HTTPLoger(date=timezone.now(), httpStuff="POST response: " + str(r))
+    http_log_item.save()
 
 
 
