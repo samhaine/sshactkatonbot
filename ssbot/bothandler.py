@@ -34,12 +34,23 @@ def getJWTtoken():
 def is_token_valid():
     token_date = JWTRToken.objects.first()
     timediff = timezone.now() - token_date
-    if timediff > timedelta(minutes>59):
+    #TODO: Check refresh time of token (at some blog it is stated liveTime is 30 mins and in other it is 60
+    if timediff > timedelta(minutes>60):
         return False
     else:
         return True
 
 def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
+    if is_token_valid():
+        token = JWTRToken.objects.first()
+    else:
+        getJWTtoken()
+        token = JWTRToken.objects.first()
+
+    headers = {
+        'Authorization': 'Bearer ' + token.JWTtoken
+        'Content-Type': 'application/json; charset=utf-8'
+    }
     data = {}
     data['type'] = 'message'
     data['timestamp'] = timezone.now()
@@ -54,6 +65,7 @@ def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     data['text'] = message
     data['replyToId'] = replyToId
     json_data = json.dump(data)
+
 
 
 
