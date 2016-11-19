@@ -17,10 +17,11 @@ import requests
 
 def autodiscovery(username, message):
     username =  username.encode('utf-8')
-    for p in [CompintelPlugin(username, {}), FoosballPlugin(username, {}), AutofeedPlugin(username, {})]:
+    for p in [CompintelPlugin(username, {}), AutofeedPlugin(username, {}), FoosballPlugin(username, {})]:
         try:
 
             p.recognize(message)
+            print p
             return p.action()
         except IncapableError:
             pass
@@ -46,7 +47,7 @@ def botendpoint(request):
         http_log_item.save()
         if received_json_data['type'] == 'message':
             msg, status = autodiscovery(received_json_data['from']['name'], received_json_data['text'])
-            if msg  :
+            if status == S_OK :
                 bothandler.reply_skype_msg(
                     msg,
                     received_json_data['conversation']['id'],

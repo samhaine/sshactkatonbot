@@ -31,11 +31,12 @@ knowledge = {
 
 class CompintelPlugin(ApiAiBase):
     def _read_token(self):
-        return os.environ.get('COMPINTEL_PLUGIN')
+        return 'e44b4b2e2a55416bb5ec53381e4fdc0a'
 
     def company_knowledge(self):
         company = self._ctx.get('Company', '').lower()
-        data = knowledge.get(company, '')
+        print self._ctx
+        data = knowledge.get(company, "Sorry don't know :-(")
         if data:
             self._ctx['speech'] = data
         return self._ctx['speech'], S_OK

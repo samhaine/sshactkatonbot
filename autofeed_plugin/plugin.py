@@ -8,7 +8,7 @@ class AutofeedPlugin(ApiAiBase):
     def _read_token(self):
         return '398d090459b444699621cc4324ccf006' #this should not be here, but you know, fuck security because Hackaton
 
-    def auto_feed(self)
+    def auto_feed(self):
     	url = self._ctx['url']
     	date = datetime.datetime.strptime(self._ctx['date'], 'mm-dd-yyyy')
     	date = datetime.date(date.year, date.month, date.day)

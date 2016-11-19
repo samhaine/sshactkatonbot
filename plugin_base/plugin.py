@@ -36,10 +36,12 @@ class ApiAiBase(object):
 
         data = json.loads(response.read())
         try:
-            self.action = getattr(self, data['result']['action'], self.unknown_action)
+            self.action = getattr(self, data['result']['action'])
             self._ctx.update(data['result']['parameters'])
             self._ctx['speech'] = data['result']['fulfillment']['speech']
         except KeyError:
+            raise IncapableError
+        except AttributeError:
             raise IncapableError
 
     def message_users(self, users, message):
