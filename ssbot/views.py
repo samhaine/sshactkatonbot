@@ -42,5 +42,5 @@ def botendpoint(request):
 def refresh_token(request):
     bothandler.getJWTtoken()
     return HttpResponse(str('done'))
-    ##bothandler.is_token_valid()
+    ## bothandler.is_token_valid()
 
