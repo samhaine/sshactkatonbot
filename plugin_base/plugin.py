@@ -47,7 +47,11 @@ class ApiAiBase(object):
             'users': users,
             'message': message,
         }
-        requests.get(self.BOT_URL, data)
+        resp = requests.get(self.BOT_URL, data)
+        status = S_FAIL
+        if resp.status_code == 200:
+            status = S_OK
+        return status
 
     def unknown_action(self):
         return '', S_INC
