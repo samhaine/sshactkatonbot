@@ -16,9 +16,9 @@ if __name__ == "__main__":
 	for row in posts:
 		user = row['name']
 		if approvers[user]:
-			approvers[user].append(row['link'])
+			approvers[user].append((row['link'], row['autofeed_plugin_linkpost.id']))
 		else:
-			approvers[user] = [row['link']]
+			approvers[user] = [(row['link'], row['autofeed_plugin_linkpost.id'])]
 
 	for approver, links in approvers.itemize():
 		msg = compose_msg(links)
@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
 def compose_msg(links):
 	msg = "Do you approve the following links?<br>"
-	for i, link in links.enumerate():
-		msg += "L" + str(i) + ". " + link + "<br>"
+	for link, link_id in links:
+		msg += str(link_id) + " " + link + "<br>"
 
 	return msg

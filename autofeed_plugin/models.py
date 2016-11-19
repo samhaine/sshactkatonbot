@@ -11,3 +11,6 @@ class LinkPost(models.Model):
 	link = models.URLField()
 	post_date = models.DateField()
 	approved = models.BooleanField(default=False)
+
+	def publish(self):
+		pass
