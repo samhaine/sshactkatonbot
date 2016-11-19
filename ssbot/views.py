@@ -26,13 +26,15 @@ def botendpoint(request):
         received_json_data=json.loads(request.body)
         http_log_item = HTTPLoger(date=timezone.now(), httpStuff=str(request.META) + " \n JSON POST DATA: " +  str(received_json_data))
         http_log_item.save()
-        #return StreamingHttpResponse('POST received: ' + str(received_json_data))
-        bothandler.reply_skype_msg(
-            'Hi there!',
-            received_json_data['conversation']['id'],
-            received_json_data['from']['name'],
-            received_json_data['id']
-        )
+        if received_json_data['type'] == 'message':
+            bothandler.reply_skype_msg(
+                'Hi there!',
+                received_json_data['conversation']['id'],
+                received_json_data['from']['name'],
+                received_json_data['id']
+            )
+        else:
+            return StreamingHttpResponse('POST received: ' + str(received_json_data))
 
     else:
         http_log_item = HTTPLoger(date=timezone.now(), httpStuff=str(request.META))
