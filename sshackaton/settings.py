@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'ssbot.apps.SsbotConfig',
     'plugin_base',
     'foosball_plugin',
+    'autofeed_plugin',
+    'compintel_plugin',
 ]
 
 MIDDLEWARE = [

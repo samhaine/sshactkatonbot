@@ -18,6 +18,8 @@ from django.contrib import admin
 
 from plugin_base.plugin import get_handler
 from foosball_plugin.plugin import FoosballPlugin
+from autofeed_plugin.plugin import AutofeedPlugin
+from compintel_plugin.plugin import CompintelPlugin
 
 urlpatterns = [
     url(r'^ssbot/', include('ssbot.urls')),
@@ -26,4 +28,3 @@ urlpatterns = [
     url(r'^autofeed/handleMessage/$', get_handler(AutofeedPlugin)),
     url(r'^compintel/handleMessage/$', get_handler(CompintelPlugin))
 ]
-

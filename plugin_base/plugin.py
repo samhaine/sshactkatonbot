@@ -1,5 +1,4 @@
 import json
-import os
 
 import apiai
 from django.http import JsonResponse
