@@ -5,6 +5,7 @@ from ssbot.models import *
 from django.utils import timezone
 from datetime import *
 from django.utils import timezone
+from django.core.serializers.json import DjangoJSONEncoder
 import json
 from ssbot.models import *
 import os
@@ -65,7 +66,7 @@ def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     data['recipient']['name'] = recipient_name
     data['text'] = message
     data['replyToId'] = replyToId
-    json_data = json.dumps(data)
+    json_data = json.dumps(data, cls=DjangoJSONEncoder)
     url = 'https://skype.botframework.com/v3/conversations/' + conversation_id + '/activities/' +replyToId
     r = requests.post(url, json_data, headers=headers)
     http_log_item = HTTPLoger(date=timezone.now(), httpStuff='POST status code: ' + str(r.status_code) + 'Req text: ' + str(r.text) + 'Content: ' + str(r.content))
