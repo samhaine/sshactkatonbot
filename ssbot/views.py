@@ -80,8 +80,12 @@ def refresh_token(request):
     return HttpResponse(str('done'))
     ## bothandler.is_token_valid()
 
-def voice_chanel(requests):
-    get_AI_reply_from_ALICE_bot = bothandler.talkToALICE(received_json_data['text'])
+@csrf_exempt
+def voice_chanel(request):
+    http_log_item = HTTPLoger(date=timezone.now(), httpStuff=str(request.META))
+    http_log_item.save()
+    msg = request.META['HTTP_MESSAGEFROMDIMA']
+    get_AI_reply_from_ALICE_bot = bothandler.talkToALICE(msg)
     return HttpResponse(get_AI_reply_from_ALICE_bot)
 
 
