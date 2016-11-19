@@ -12,7 +12,7 @@ import requests
 
 
 def getJWTtoken():
-    """ Generates  aut JWT token and returns, returns tuple (token, timestamp) """
+    """ Generates auth JWT token and returns, returns tuple (token, timestamp) """
     url = settings.AUTH_URL
     id = settings.BOT_ID
     passwd = settings.BOT_PASSWD
@@ -42,13 +42,15 @@ def is_token_valid():
 
 def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     if is_token_valid():
+        #just fuck it and try to refresh!
+        getJWTtoken()
         token = JWTRToken.objects.first()
     else:
         getJWTtoken()
         token = JWTRToken.objects.first()
 
     headers = {
-        'Authorization': 'Bearer ' + token.JWTtoken
+        'Authorization': 'Bearer ' + token.JWTtoken,
         'Content-Type': 'application/json; charset=utf-8'
     }
     data = {}
@@ -65,6 +67,8 @@ def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     data['text'] = message
     data['replyToId'] = replyToId
     json_data = json.dump(data)
+    url = 'https://skype.botframework.com/v3/conversations/' + conversation_id + '/activities/' +replyToId
+    r = requests.post(url, json_data, headers=headers)
 
 
 
