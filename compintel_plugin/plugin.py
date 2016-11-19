@@ -34,4 +34,8 @@ class CompintelPlugin(ApiAiBase):
         return os.environ.get('COMPINTEL_PLUGIN')
 
     def company_knowledge(self):
+        company = self._ctx.get('Company', '').lower()
+        data = knowledge.get(company, '')
+        if data:
+            self._ctx['speech'] = data
         return self._ctx['speech'], S_OK
