@@ -90,4 +90,4 @@ def talkToALICE(input_msg):
         traceback.print_exc(file=sys.stdout)
 
 
-    return 'Sorry I am not myself today...'
+    return 'Sorry I am not myself today... '
