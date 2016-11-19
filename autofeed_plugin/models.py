@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-import sys
+import os
 from django.db import models
 import facebook
 
@@ -14,7 +14,7 @@ class LinkPost(models.Model):
 	approved = models.BooleanField(default=False)
 
 	def publish(self):
-		APP_KEY = sys.environ.get('FB_KEY')
+		APP_KEY = os.environ.get('FB_KEY')
 		graph = facebook.GraphAPI(access_token=APP_KEY, version='2.2')
 		att = {'name': '',
 		    	'link': link.value,

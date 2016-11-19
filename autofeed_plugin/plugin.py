@@ -6,7 +6,7 @@ from .models import Approver, LinkPost
 
 class AutofeedPlugin(ApiAiBase):
     def _read_token(self):
-        return os.environ.get('AUTOFEED_TOKEN')
+        return '398d090459b444699621cc4324ccf006' #this should not be here, but you know, fuck security because Hackaton
 
     def auto_feed(self):
         return self._ctx['speech'], S_OK
