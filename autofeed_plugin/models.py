@@ -17,7 +17,7 @@ class LinkPost(models.Model):
 		APP_KEY = os.environ.get('FB_KEY')
 		graph = facebook.GraphAPI(access_token=APP_KEY, version='2.2')
 		att = {'name': '',
-		    	'link': link.value,
+		    	'link': self.link,
 			    'caption': '',
 			    'description': '',
 			    'picture': ''}

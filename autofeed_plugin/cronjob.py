@@ -7,7 +7,7 @@ cur = conn.cursor()
 
 def get_todays_posts():
 	date_dict = {'today': date.today(), 'approved': False}
-	cur.execute('select * from autofeed_plugin_approver join autofeed_plugin_linkpost where autofeed_plugin_linkpost.date=:today and autofeed_plugin_approver.approved=:approved', date_dict)
+	cur.execute('select * from autofeed_plugin_approver join autofeed_plugin_linkpost where autofeed_plugin_linkpost.post_date=:today and autofeed_plugin_approver.approved=:approved', date_dict)
 	return cur.fetchall()
 
 if __name__ == "__main__":
