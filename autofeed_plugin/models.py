@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 class Approver(models.Model):
+	name = models.CharField()
 	name = models.CharField(max_length=400)
 	to_approve = models.ForeignKey('LinkPost')
 
