@@ -45,7 +45,7 @@ def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     if is_token_valid():
         token = JWTRToken.objects.first()
     else:
-        getJWTtoken()
+        #getJWTtoken()
         token = JWTRToken.objects.first()
 
     headers = {
