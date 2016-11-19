@@ -69,8 +69,8 @@ def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     json_data = json.dump(data)
     url = 'https://skype.botframework.com/v3/conversations/' + conversation_id + '/activities/' +replyToId
     r = requests.post(url, json_data, headers=headers)
-    raise Exception(r)
-
+    http_log_item = HTTPLoger(date=timezone.now(), httpStuff="POST response: " + str(r))
+    http_log_item.save()
 
 
 
