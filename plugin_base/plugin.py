@@ -14,9 +14,10 @@ class IncapableError(Exception):
 
 
 class ApiAiBase(object):
-    def __init__(self):
+    def __init__(self, user, ctx):
+        self.user = user
+        self._ctx = ctx
         self.action = self.unknown_action
-        self._ctx = {}
         self._ai = apiai.ApiAI(self._read_token())
 
     def _read_token(self):
@@ -32,7 +33,7 @@ class ApiAiBase(object):
         data = json.loads(response.read())
         try:
             self.action = getattr(self, data['result']['action'], self.unknown_action)
-            self._ctx = data['result']['parameters']
+            self._ctx.update(data['result']['parameters'])
             self._ctx['speech'] = data['result']['fulfillment']['speech']
         except KeyError:
             raise IncapableError
@@ -51,8 +52,11 @@ def get_handler(pluginClass):
         }
 
         try:
-            plugin = pluginClass()
-            plugin.recognize(payload.get('message', 'I wanna play foosball at 4PM'))
+            plugin = pluginClass(
+                payload.get('user', None),
+                payload.get('context', {}),
+            )
+            plugin.recognize(payload.get('message', ''))
             response, status = plugin.action()
             out_data['response'] = response
             out_data['status'] = status
