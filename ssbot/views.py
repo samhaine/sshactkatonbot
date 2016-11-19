@@ -40,6 +40,7 @@ def botendpoint(request):
             return StreamingHttpResponse('POST received: ' + str(received_json_data))
 
     else:
+        bothandler.send_skype_msg("COMM: BOT -> USER", '29:1psxojXwFAB0yv7pz-Z1DynvRQwxO2ffxh5Lwo7oZoAJEfu_nBYq7UdIKMcC0X9fN', 'Rados\u0142aw Warzocha')
         http_log_item = HTTPLoger(date=timezone.now(), httpStuff=str(request.META))
         http_log_item.save()
         return HttpResponse(str(request.META))
