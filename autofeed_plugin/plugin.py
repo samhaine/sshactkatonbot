@@ -24,4 +24,9 @@ class AutofeedPlugin(ApiAiBase):
     		apr.save()
 
     	return self._ctx['speech'], S_OK
-    	
+
+    def approve(self):
+    	pass
+
+    def deny(self):
+    	pass

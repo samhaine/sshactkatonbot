@@ -1,10 +1,32 @@
-from .models import Approver, LinkPost
+from datetime import date, timedelta
+import requests
+import sqlite3
 
-def get_tommorows_posts():
-	pass
+conn = sqlite3.connect('autofeed.sqlite')
+cur = conn.cursor()
 
-def get_todays_approved_posts():
-	pass
+def get_todays_posts():
+	date_dict = {'today': date.today(), 'approved': False}
+	cur.execute('select * from autofeed_plugin_approver join autofeed_plugin_linkpost where autofeed_plugin_linkpost.date=:today and autofeed_plugin_approver.approved=:approved', date_dict)
+	return cur.fetchall()
 
 if __name__ == "__main__":
-	pass
+	posts = get_todays_posts()
+	approvers = {}
+	for row in posts:
+		user = row['name']
+		if approvers[user]:
+			approvers[user].append(row['link'])
+		else:
+			approvers[user] = [row['link']]
+
+	for approver, links in approvers.itemize():
+		msg = compose_msg(links)
+		request.post('localhost/sendMessage', {'users': [approver], 'msg': msg})
+
+def compose_msg(links):
+	msg = "Do you approve the following links?<br>"
+	for i, link in links.enumerate():
+		msg += "L" + str(i) + ". " + link + "<br>"
+
+	return msg
