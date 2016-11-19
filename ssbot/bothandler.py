@@ -102,4 +102,34 @@ def get_gross_joke():
     return str(joke.replace('<p>', ''))
 
 
+def send_skype_msg(message, recipient_id, recipient_name):
+    if is_token_valid():
+        token = JWTRToken.objects.first()
+        print "Token is Valid no need to update"
+    else:
+        print "Need to refresh token "
+        getJWTtoken()
+        token = JWTRToken.objects.first()
+
+    headers = {
+        'Authorization': 'Bearer ' + token.JWTtoken,
+        'Content-Type': 'application/json; charset=utf-8'
+    }
+    data = {}
+    data['type'] = 'message'
+    data['timestamp'] = timezone.now().isoformat()
+    data['from'] = {}
+    data['from']['id'] = settings.BOT_RECIPIENT
+    data['from']['name'] = settings.BOT_NAME
+    data['conversation'] = {}
+    data['conversation']['id'] = recipient_id
+    data['recipient'] = {}
+    data['recipient']['id'] = recipient_id
+    data['recipient']['name'] = recipient_name
+    data['text'] = message
+    json_data = json.dumps(data, cls=DjangoJSONEncoder)
+    url = 'https://skype.botframework.com/v3/conversations/' + recipient_id + '/activities/'
+    r = requests.post(url, json_data, headers=headers)
+    #http_log_item = HTTPLoger(date=timezone.now(), httpStuff='POST status code: ' + str(r.status_code) + 'Req text: ' + str(r.text) + 'Content: ' + str(r.content))
+    #http_log_item.save()
 
