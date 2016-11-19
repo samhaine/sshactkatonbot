@@ -55,7 +55,7 @@ def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     }
     data = {}
     data['type'] = 'message'
-    data['timestamp'] = timezone.now()
+    data['timestamp'] = timezone.now().isoformat()
     data['from'] = {}
     data['from']['id'] = settings.BOT_RECIPIENT
     data['from']['name'] = settings.BOT_NAME
