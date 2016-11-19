@@ -45,8 +45,10 @@ def is_token_valid():
 def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     if is_token_valid():
         token = JWTRToken.objects.first()
+        print "Token is Valid no need to update"
     else:
-        #getJWTtoken()
+        print "Need to refresh token "
+        getJWTtoken()
         token = JWTRToken.objects.first()
 
     headers = {
@@ -73,4 +75,19 @@ def reply_skype_msg(message, conversation_id, recipient_name, replyToId):
     http_log_item.save()
 
 
+def talkToALICE(input_msg):
+    try:
+        print input_msg
+        url = 'http://sheepridge.pandorabots.com/pandora/talk?botid=b69b8d517e345aba&skin=custom_input'
+        data = {
+            'botcust2': 'bdfc33b5de1b1c31',
+            'input': input_msg
+        }
+        output_msg = requests.post(url, data=data).content
+        return output_msg[output_msg.rfind("ALICE:")+7:]
+    except:
+        import traceback, sys
+        traceback.print_exc(file=sys.stdout)
 
+
+    return 'Sorry I am not myself today...'
