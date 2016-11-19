@@ -23,5 +23,7 @@ urlpatterns = [
     url(r'^ssbot/', include('ssbot.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^foosball/handleMessage/$', get_handler(FoosballPlugin)),
+    url(r'^autofeed/handleMessage/$', get_handler(AutofeedPlugin)),
+    url(r'^compintel/handleMessage/$', get_handler(CompintelPlugin))
 ]
 
