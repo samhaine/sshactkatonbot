@@ -2,4 +2,11 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-# Create your models here.
+class Approver(models.Model):
+	name = models.CharField()
+	to_approve = models.ForeignKey('LinkPost')
+
+class LinkPost(models.Model):
+	link = models.URLField()
+	post_date = models.DateField()
+	approved = models.BooleanField(default=True)
