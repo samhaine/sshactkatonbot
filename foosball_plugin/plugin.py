@@ -1,7 +1,7 @@
 import datetime
 import os
 
-from plugin_base.plugin import ApiAiBase, S_OK
+from plugin_base.plugin import ApiAiBase, S_OK, S_INC
 from foosball_plugin.models import User
 
 
@@ -23,10 +23,10 @@ class FoosballPlugin(ApiAiBase):
             user.valid_to = valid_to
             user.save()
 
-        status = S_OK
+        status = S_INC
 
         wanna_play = User.objects.filter(valid_to__gt=now).values_list('name', flat=True)[:2]
-        if len(wanna_play) == 2:
+        if len(wanna_play) == 4:
             status = self.message_users(wanna_play, u'Users {} wanna play'.format(', '.join(wanna_play)))
             # self._ctx['speech'] = ''
             User.objects.filter(name__in=wanna_play).delete()
