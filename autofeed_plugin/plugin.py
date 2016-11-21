@@ -12,15 +12,13 @@ class AutofeedPlugin(ApiAiBase):
 		url = self._ctx['url']
 		print "---------------------------------------------------------"
 		print self._ctx['date']
-		date = datetime.datetime.strptime(self._ctx['date'], 'yyyy-mm-dd')
+		date = datetime.datetime.strptime(self._ctx['date'], '%Y-%m-%d')
 		date = datetime.date(date.year, date.month, date.day)
 		decisionmakers = self._ctx['any'].split('and') # this is the parameter's name in the api.ai, some problem?
-
-		post = LinkPost(url, date, false)
-		post.save()
+		print url, date
+		post = LinkPost.objects.create(link=url, post_date=date, approved=False)
 		for dm in decisionmakers:
-			apr = Approver(dm, post)
-			apr.save()
+			apr = Approver.objects.create(name=dm, to_approve=post, approved=False)
 
 		return self._ctx['speech'], S_OK
 
