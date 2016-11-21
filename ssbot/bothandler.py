@@ -95,7 +95,7 @@ def talkToALICE(input_msg):
 
 
     return 'Sorry I am not myself today [internal server error or whateva... But I have joke for you ' + get_gross_joke().replace('<p>', '').replace('\n','')
-
+#
 def get_gross_joke():
     page = str(requests.post('http://www.randomjoke.com/topic/gross.php').text)
     joke = page[page.find('topic list"></P>\n<P>\n')+21:page.find('<CENTER>')-7]
